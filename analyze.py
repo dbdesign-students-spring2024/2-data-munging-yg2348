@@ -6,12 +6,19 @@ def calculate_decade_average(data, start_year, end_year):
     if not decade_data:
         return None  # No data for the specified decade
 
-    anomalies = [float(anomaly) for anomaly in decade_data[0][1:]]
+    anomalies = [float(anomaly.strip()) if anomaly.strip().lower() != 'naan' else None for anomaly in decade_data[0][1:]]
     
     for row in decade_data[1:]:
-        anomalies = [anomaly + float(val) for anomaly, val in zip(anomalies, row[1:])]
+        for i, val in enumerate(row[1:]):
+            if val.strip().lower() != 'naan':
+                anomalies[i] = anomalies[i] + float(val.strip()) if anomalies[i] is not None else None
 
-    avg_anomalies = [anomaly / len(decade_data) for anomaly in anomalies]
+    avg_anomalies = [
+        anomaly / len([row for row in decade_data if row[0] is not None and row[1] is not None]) 
+        if anomaly is not None 
+        else None 
+        for anomaly in anomalies
+    ]
     return avg_anomalies
 
 def main():
@@ -26,11 +33,6 @@ def main():
     if not data:
         print("No valid data found.")
         return
-
-    # Output the data for debugging
-    # print("Data:")
-    # for row in data:
-    #     print()
 
     # Output average temperature anomaly for each decade
     start_year = 1880

@@ -56,7 +56,7 @@ def clean_and_transform_data(raw_data_filename, cleaned_data_filename):
 
     with open(cleaned_data_filename, 'w') as cleaned_file:
         cleaned_file.write('\n'.join(cleaned_lines))
-# Rest of the code remains unchanged...
+
 
 if __name__ == "__main__":
     # Specify the filenames
