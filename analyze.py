@@ -28,9 +28,9 @@ def main():
         return
 
     # Output the data for debugging
-    print("Data:")
-    for row in data:
-        print(row)
+    # print("Data:")
+    # for row in data:
+    #     print()
 
     # Output average temperature anomaly for each decade
     start_year = 1880

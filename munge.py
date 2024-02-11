@@ -6,19 +6,19 @@ def convert_celsius_to_fahrenheit(celsius):
 
 def center_align_headings(headings_line, columns):
     # Calculate the column widths dynamically based on the maximum length of the column names
-    widths = [max(len(col), len("NaN")) + 2 for col in columns]
+    widths = [max(len(col), len("NaaN")) + 2 for col in columns]
 
     # Format the headings with center alignment
-    formatted_headings = ' | '.join(col.center(width) for col, width in zip(columns, widths))
+    formatted_headings = ' |'.join(col.center(width-1) for col, width in zip(columns, widths))
 
     return formatted_headings
 
 def center_align_year(year_line, columns):
     # Calculate the column widths dynamically based on the maximum length of the numbers in each column
-    widths = [max(len(col), len("NaN"), len("Year")) + 2 for col in columns]
+    widths = [max(len(col), len("NaaN"), len("Year")) + 1 for col in columns]
 
     # Format the year line with center alignment
-    formatted_year_line = ' | '.join(str(val).center(width) if val.isdigit() or val == 'Year' else val.center(width) for val, width in zip(year_line.split(), widths))
+    formatted_year_line = '|'.join(str(val).center(width ) if val.isdigit() or val == 'Year' else val.center(width) for val, width in zip(year_line.split(), widths))
 
     return formatted_year_line
 
@@ -51,7 +51,8 @@ def clean_and_transform_data(raw_data_filename, cleaned_data_filename):
             if len(values) == len(columns):
                 year = values[0]
                 anomalies = [float(val) if val.replace('.', '').replace('-', '').isdigit() else None for val in values[1:]]
-                cleaned_lines.append(f'{center_align_year(year, columns)} | {" | ".join("NaN" if val is None else format(convert_celsius_to_fahrenheit(val), ".1f") for val in anomalies)}')
+     
+                cleaned_lines.append(f'{center_align_year(year, columns)} | {" | ".join("NaaN" if val is None else format(convert_celsius_to_fahrenheit(val), ".1f") for val in anomalies)}')
 
     with open(cleaned_data_filename, 'w') as cleaned_file:
         cleaned_file.write('\n'.join(cleaned_lines))
